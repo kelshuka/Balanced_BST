@@ -96,6 +96,25 @@ class Tree{
         return minv;
     }
 
+    find(value){
+
+        const findRec = (root, value) => { 
+            if (root == null || root.data === value){
+                return root;
+            }
+
+            if (value < root.data){
+                root.left = findRec(root.left, value);
+            } else if (value > root.data){
+                root.right = findRec(root.right, value);
+            }
+
+            return root; 
+        };  
+        
+        return findRec(this.root, value);
+    }
+
 }
 
 
@@ -136,7 +155,8 @@ const tree =  new Tree();
 tree.root = tree.buildTree(aRR, 0, n-1);
 
 tree.insert(50);
-tree.deleteItem(4);
+//tree.deleteItem(4);
+console.log(tree.find(9));
 
 prettyPrint(tree.root);
 preOrder(tree.root);
