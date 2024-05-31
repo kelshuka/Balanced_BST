@@ -31,13 +31,71 @@ class Tree{
         if (start > end){return null;}
 
         let mid = parseInt((start + end)/2);
-        let node = new Node(nums[mid]);
+        let root = new Node(nums[mid]);
 
-        node.left = this.buildTree(nums, start, mid-1);
-        node.right = this.buildTree(nums, mid + 1 , end);
+        root.left = this.buildTree(nums, start, mid-1);
+        root.right = this.buildTree(nums, mid + 1 , end);
 
-        return node;
+        return root;
     }
+
+    insert(value){
+
+        const insertRec = (root, value) => { 
+            if (root == null){
+                return new Node(value);
+            }
+
+            if (value < root.data){
+                root.left = insertRec(root.left, value);
+            } else if (value > root.data){
+                root.right = insertRec(root.right, value);
+            }
+
+            return root; 
+        };  
+        
+        this.root = insertRec(this.root, value);
+    }
+
+    deleteItem(value){
+
+        const deleteNode = (root, value) => { 
+            if (root == null){
+                return new root;
+            }
+
+            if (value < root.data){
+                root.left = deleteNode(root.left, value);
+            } else if (value > root.data){
+                root.right = deleteNode(root.right, value);
+            } // if the value is same as the root's value
+            else{
+                // Node with only one child or no child
+                if (root.left === null) return root.right;
+                else if (root.right === null) return root.left;
+
+                // Node with two children
+                root.data = this.minValue(root.right);
+
+                // delete the inorder successor
+                root.right = deleteNode(root.right, root.data)
+            }
+
+            return root; 
+        };  
+        
+        this.root = deleteNode(this.root, value);
+    }
+    minValue(node){
+        let minv = node.data;
+        while (node.left !== null){
+            minv = node.left.value;
+            node = node.left;
+        }
+        return minv;
+    }
+
 }
 
 
@@ -74,9 +132,17 @@ aRR = rmDup(aRR);
 const n = aRR.length;
 
 const tree =  new Tree();
+
 tree.root = tree.buildTree(aRR, 0, n-1);
+
+tree.insert(50);
+tree.deleteItem(4);
+
 prettyPrint(tree.root);
 preOrder(tree.root);
+
+const root = tree.root;
+console.log(root);
 
 
 
