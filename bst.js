@@ -238,32 +238,36 @@ class Tree{
         return depthRec(node, 0);
     }
 
-    maxDepth(root){
-        let fringe = [{node:root, depth:1}];
-        let current = fringe.pop();
-        let max = 0;
+    Height(root){
+        if (root == null) return 0;
 
-        while(current && current.node){
-            let node = current.node;
+        let leftHeight = this.Height(root.left);
+        let rightHeight = this.Height(root.right);
 
-            if(node.left){
-                fringe.push({node: node.left, depth: current.depth + 1});
-            }
+        // if left subtree or rightsubtree unbalanced return -1
+        if(leftHeight == -1 || rightHeight == -1) return -1;
 
-            if(node.right){
-                fringe.push({node: node.right, depth: current.depth + 1});
-            }
-
-            if(current.depth > max){
-                max = current.depth;
-            }
-
-            current = fringe.pop();
-        }
-
-        return max;
-        
+        // if their heights differ by more than "1", return -1
+        if(Math.abs(leftHeight - rightHeight) > 1) return -1;
+        //else
+        return Math.max(leftHeight, rightHeight) + 1;
     }
+
+    isBalanced(){
+        if (this.root == null) return true;
+
+        if (this.Height(this.root) == -1) return false;
+
+        return true;
+    }
+
+    rebalance(){
+        const newArr = this.inOrder();
+        const n = newArr.length;
+
+        this.root = this.buildTree(newArr, 0, n-1);
+    }
+
 
 }
 
@@ -296,57 +300,35 @@ const tree =  new Tree();
 
 tree.root = tree.buildTree(aRR, 0, n-1);
 
-//tree.insert(50);
+tree.insert(50);
+console.log("Is the tree balanced before rebalancing?", tree.isBalanced());
+//tree.insert(53);
 //tree.deleteItem(4);
-console.log(tree.levelOrder());
-console.log(tree.inOrder());
-console.log(tree.preOrder());
-console.log(tree.postOrder());
-console.log(tree.height(tree.root));
-console.log(tree.depth(tree.root));
-console.log(tree.maxDepth(3));
 //console.log(tree.find(9));
+console.log(tree.levelOrder());
+prettyPrint(tree.root);
+
+
+
+tree.rebalance();
+console.log("Is the tree balanced after rebalancing?", tree.isBalanced());
+
+console.log("--- Tree Traversal After Rebalancing ---");
+console.log("Level Order:");
+//tree.levelOrder(console.log);
+console.log(tree.levelOrder());
+
+console.log("Pre Order:");
+console.log(tree.preOrder());
+
+console.log("Post Order:");
+console.log(tree.postOrder());
+
+console.log("In Order:");
+console.log(tree.inOrder());
+
 
 prettyPrint(tree.root);
-//preOrder(tree.root);
 
 const root = tree.root;
-//console.log(root);
-
-
-/* fNode(val){// for other nodes
-        if (!this.root){return;}
-
-        const queue = [this.root];
-        let height = 0;
-
-        const level = [];
-
-        while (queue.length){
-
-            const queueLength = queue.length;
-
-            for (let i=0; i < queueLength; i++){
-                const node = queue.shift();
-
-                level.push(node.data);
-                if (level[i] == val){
-                    //console.log(level[i]);
-                    return height;
-                }
-
-                if(node.left){
-                    queue.push(node.left);
-                }
-                if (node.right){
-                    queue.push(node.right);
-                }
-
-                height++; 
-            }
-
-               
-        }
-    }  */
-
 
