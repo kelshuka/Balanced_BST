@@ -150,7 +150,7 @@ class Tree{
         }
     }
 
-    inOrder(callback){
+    inOrder(callback){ // (left, root(data), right)
         const result = [];
         const inRec = (root) => { 
     
@@ -174,18 +174,46 @@ class Tree{
         }
     }
 
-    preOrder(){
+    preOrder(callback){// (root(data), left, right)
         const result = []; 
         const preOrderRec = (node) => {
             if (node == null){return;}
-            result.push(node.data);
+
+            if(callback){ 
+                callback(node);
+            }else {
+                result.push(node.data);
+            }
         
             preOrderRec(node.left);
             preOrderRec(node.right);
         };
 
         preOrderRec(this.root);
-        return result;
+        if(!callback){ 
+            return result;
+        }
+    }
+
+    postOrder(callback){// (left, right, root(data))
+        const result = [];
+        const postOrderRec = (node) => {
+            if (node == null){return};
+
+            postOrderRec(node.left);
+            postOrderRec(node.right);
+
+            if(callback){ 
+                callback(node);
+            }else {
+                result.push(node.data);
+            }
+        }
+
+        postOrderRec(this.root);
+        if(!callback){ 
+            return result;
+        }
     }
 
 }
@@ -231,6 +259,7 @@ tree.root = tree.buildTree(aRR, 0, n-1);
 console.log(tree.levelOrder());
 console.log(tree.inOrder());
 console.log(tree.preOrder());
+console.log(tree.postOrder());
 //console.log(tree.find(9));
 
 prettyPrint(tree.root);
