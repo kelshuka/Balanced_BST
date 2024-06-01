@@ -115,20 +115,27 @@ class Tree{
         return findRec(this.root, value);
     }
 
-    levelOrder(){
-        const levels = [];
+    levelOrder(callback){
 
         if(!this.root){
-            return levels;
+            return [];
         }
 
         const queue = [this.root];
+        const level = [];
+
         while (queue.length){
+
             const queueLength = queue.length;
-            const level = [];
 
             for (let i=0; i < queueLength; i++){
                 const node = queue.shift();
+
+                if(callback){
+                    callback(node);
+                }else {
+                    level.push(node.data);
+                }
 
                 if(node.left){
                     queue.push(node.left);
@@ -136,14 +143,28 @@ class Tree{
                 if (node.right){
                     queue.push(node.right);
                 }
-
-                level.push(node.data);
             }
-
-            levels.push(level);
         }
+        if(!callback){
+            return level;
+        }
+    }
 
-        return levels;
+    
+    inOrder(){
+
+        const result = [];
+        const inRec = (root) => { 
+
+            if (root != null){
+                inRec(root.left);
+                result.push(root.data);
+                inRec(root.right);
+            }
+        };
+
+        inRec(this.root);
+        return result;
     }
 
 }
@@ -188,6 +209,7 @@ tree.root = tree.buildTree(aRR, 0, n-1);
 //tree.insert(50);
 //tree.deleteItem(4);
 console.log(tree.levelOrder());
+console.log(tree.inOrder());
 //console.log(tree.find(9));
 
 prettyPrint(tree.root);
