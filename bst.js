@@ -150,8 +150,32 @@ class Tree{
         }
     }
 
+    inOrder(callback){
+        const result = [];
+        const inRec = (root) => { 
     
-    inOrder(){
+            if (root == null){return;}
+
+            inRec(root.left);
+
+            if(callback){
+                callback(root);
+            }else {
+                result.push(root.data);
+            }
+
+            inRec(root.right);
+        };
+
+        inRec(this.root);
+
+        if(!callback){
+            return result;
+        }
+    }
+
+    // inOrder() no callbacks
+    /* inOrder(){
 
         const result = [];
         const inRec = (root) => { 
@@ -166,7 +190,7 @@ class Tree{
         inRec(this.root);
         return result;
     }
-
+ */
 }
 
 
