@@ -115,6 +115,37 @@ class Tree{
         return findRec(this.root, value);
     }
 
+    levelOrder(){
+        const levels = [];
+
+        if(!this.root){
+            return levels;
+        }
+
+        const queue = [this.root];
+        while (queue.length){
+            const queueLength = queue.length;
+            const level = [];
+
+            for (let i=0; i < queueLength; i++){
+                const node = queue.shift();
+
+                if(node.left){
+                    queue.push(node.left);
+                }
+                if (node.right){
+                    queue.push(node.right);
+                }
+
+                level.push(node.data);
+            }
+
+            levels.push(level);
+        }
+
+        return levels;
+    }
+
 }
 
 
@@ -154,9 +185,10 @@ const tree =  new Tree();
 
 tree.root = tree.buildTree(aRR, 0, n-1);
 
-tree.insert(50);
+//tree.insert(50);
 //tree.deleteItem(4);
-console.log(tree.find(9));
+console.log(tree.levelOrder());
+//console.log(tree.find(9));
 
 prettyPrint(tree.root);
 preOrder(tree.root);
