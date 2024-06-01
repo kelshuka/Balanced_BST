@@ -174,23 +174,20 @@ class Tree{
         }
     }
 
-    // inOrder() no callbacks
-    /* inOrder(){
-
-        const result = [];
-        const inRec = (root) => { 
-
-            if (root != null){
-                inRec(root.left);
-                result.push(root.data);
-                inRec(root.right);
-            }
+    preOrder(){
+        const result = []; 
+        const preOrderRec = (node) => {
+            if (node == null){return;}
+            result.push(node.data);
+        
+            preOrderRec(node.left);
+            preOrderRec(node.right);
         };
 
-        inRec(this.root);
+        preOrderRec(this.root);
         return result;
     }
- */
+
 }
 
 
@@ -208,17 +205,16 @@ const prettyPrint = (node, prefix = "", isLeft = true) => {
     }
 };
  
-function preOrder(node){
+/* function preOrder(node){
     if (node == null){return;}
     console.log(node.data + " ");
 
     preOrder(node.left);
     preOrder(node.right);
 
-}
+} */
 
 let aRR = [1,7,4,23,8,9,4,3,5,7,9,67,6345,324];
-//let aRR = [1,3,4,5,7,8,9,23,67,324,6345];
 
 let ab = (a,b) => a-b;
 aRR = aRR.sort(ab);
@@ -234,10 +230,11 @@ tree.root = tree.buildTree(aRR, 0, n-1);
 //tree.deleteItem(4);
 console.log(tree.levelOrder());
 console.log(tree.inOrder());
+console.log(tree.preOrder());
 //console.log(tree.find(9));
 
 prettyPrint(tree.root);
-preOrder(tree.root);
+//preOrder(tree.root);
 
 const root = tree.root;
 console.log(root);
