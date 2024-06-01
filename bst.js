@@ -216,6 +216,55 @@ class Tree{
         }
     }
 
+    height(node){// height (for the root node)
+        if(node === null){  return -1;}
+
+        const leftHeight = this.height(node.left);
+        const rightHeight = this.height(node.right);
+
+        return Math.max(leftHeight, rightHeight) + 1;
+    }
+    
+    depth(node){
+        const depthRec = (currentNode, Depth) =>{
+            if (currentNode === null) {return -1;}
+
+            if (currentNode === this.root) {
+                return Depth;
+            }
+
+            return depthRec(currentNode.node, Depth + 1);
+        };
+        return depthRec(node, 0);
+    }
+
+    maxDepth(root){
+        let fringe = [{node:root, depth:1}];
+        let current = fringe.pop();
+        let max = 0;
+
+        while(current && current.node){
+            let node = current.node;
+
+            if(node.left){
+                fringe.push({node: node.left, depth: current.depth + 1});
+            }
+
+            if(node.right){
+                fringe.push({node: node.right, depth: current.depth + 1});
+            }
+
+            if(current.depth > max){
+                max = current.depth;
+            }
+
+            current = fringe.pop();
+        }
+
+        return max;
+        
+    }
+
 }
 
 
@@ -233,14 +282,7 @@ const prettyPrint = (node, prefix = "", isLeft = true) => {
     }
 };
  
-/* function preOrder(node){
-    if (node == null){return;}
-    console.log(node.data + " ");
 
-    preOrder(node.left);
-    preOrder(node.right);
-
-} */
 
 let aRR = [1,7,4,23,8,9,4,3,5,7,9,67,6345,324];
 
@@ -260,15 +302,51 @@ console.log(tree.levelOrder());
 console.log(tree.inOrder());
 console.log(tree.preOrder());
 console.log(tree.postOrder());
+console.log(tree.height(tree.root));
+console.log(tree.depth(tree.root));
+console.log(tree.maxDepth(3));
 //console.log(tree.find(9));
 
 prettyPrint(tree.root);
 //preOrder(tree.root);
 
 const root = tree.root;
-console.log(root);
+//console.log(root);
 
 
+/* fNode(val){// for other nodes
+        if (!this.root){return;}
 
+        const queue = [this.root];
+        let height = 0;
+
+        const level = [];
+
+        while (queue.length){
+
+            const queueLength = queue.length;
+
+            for (let i=0; i < queueLength; i++){
+                const node = queue.shift();
+
+                level.push(node.data);
+                if (level[i] == val){
+                    //console.log(level[i]);
+                    return height;
+                }
+
+                if(node.left){
+                    queue.push(node.left);
+                }
+                if (node.right){
+                    queue.push(node.right);
+                }
+
+                height++; 
+            }
+
+               
+        }
+    }  */
 
 
